@@ -15,9 +15,12 @@ class PlayState extends FlxState
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
+	 var sheep:Sheep;
 	override public function create():Void
 	{
 		super.create();
+		sheep = new Sheep();
+		add(sheep);
 	}
 	
 	/**
@@ -35,5 +38,6 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		sheep.update();
 	}	
 }
