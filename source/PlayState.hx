@@ -26,20 +26,25 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		FlxG.camera.bgColor = FlxColor.HOT_PINK;
-
 		super.create();
+
+        // create Player
 		sheep = new Sheep();
 		add(sheep);
-
+        
+        // create Weapons
 		weapons = new Weapon();
 		add(weapons);
-		map = new MapGen();
-		add(map);
-		sheep.map;
-		for (val in map.collGrounds){
+        
+        // map gen
+		map = new MapGen();	
+        add(map); 
+		/*for (val in map.collGrounds){
 			//trace(val + " test");
 			add(val);
-		}
+		}*/
+        add(map.collGrounds);
+
 		for (val in map.visGrounds){
 			//trace(val + " test");
 			add(val);
@@ -63,11 +68,9 @@ class PlayState extends FlxState
 		super.update();
 		map.update();
 		sheep.map = map;
-		for (val in map.collGrounds) {
-				FlxG.collide(val, sheep);
-			}
-		sheep.update();
 
+		sheep.update();
+	
 		weapons.setPos(sheep.x, sheep.y);
 		weapons.flipPos(sheep.flipX);
 		weapons.update();

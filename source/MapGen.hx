@@ -4,16 +4,17 @@ import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.FlxBasic;
 import flixel.util.FlxPoint;
+import flixel.group.FlxTypedGroup;
 
 class MapGen extends FlxBasic {
 	
-	public var collGrounds = new Array<FlxSprite>();
+	public var collGrounds = new FlxTypedGroup<FlxSprite>();
 	public var visGrounds = new Array<FlxSprite>();
 
 	public function new()
     {
     	super();
-    	createGround(0, 400, 400, 15, 35);
+    	createGround(0, 200, 400, 15, 35);
     }
 
     override public function update():Void
@@ -32,14 +33,16 @@ class MapGen extends FlxBasic {
     	ground.makeGraphic(w, depth, FlxColor.KHAKI);
     	ground.x = x;
     	ground.y = y-depth;
+
+        //ground.updateHitbox();
+        visGrounds.push(ground);
+
     	var collGround = new FlxSprite();
     	collGround.makeGraphic(w, h, FlxColor.BROWN);
     	collGround.x = x;
     	collGround.y = y;
-		collGround.immovable = true;
-		ground.updateHitbox();
-		collGround.updateHitbox();
-    	visGrounds.push(ground);
-    	collGrounds.push(collGround);
+
+		//collGround.updateHitbox();
+    	collGrounds.add(collGround);
     }
 }

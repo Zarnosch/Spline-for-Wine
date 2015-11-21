@@ -12,7 +12,7 @@ class Weapon extends FlxSprite {
 	var currentEquippedWeapon = 1;
 
 	var poolSize = 500;
-	var bullets = new FlxTypedGroup<Bullet>(poolSize);
+	//var bullets = new FlxTypedGroup<Bullet>(poolSize);
 
 
 	public function new():Void
