@@ -76,7 +76,6 @@ class Sheep extends FlxSprite{
         activeSpeed = 0;
         jumpStart[0] = 0;
         jumpStart[1] = 0;
-		map = new MapGen();
 		isOnGround = false;
 		doubbleJump = true;
 
@@ -88,7 +87,6 @@ class Sheep extends FlxSprite{
         updateMovement();
         checkGravity();
         checkSpeed();
-		trace(doubbleJump);
     }
 
     override public function destroy():Void

@@ -29,7 +29,7 @@ class PlayState extends FlxState
 		super.create();
 		
 		// map gen
-		map = new MapGen();	
+		map = new MapGen(1000, 0);
         add(map);
 		
 		add(map.collGrounds);
