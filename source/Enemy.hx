@@ -3,7 +3,6 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
-import flixel.FlxG.collide;
 
 //SheepState
 enum State {
@@ -12,7 +11,11 @@ enum State {
 	Attacking;
 }
 
-class Sheep extends FlxSprite{
+enum Type {
+	SovietSheep;
+}
+
+class Enemy extends FlxSprite{
 	//Running
 	public var maxSpeed:Float;
 	public var activeSpeed:Float;
@@ -27,9 +30,6 @@ class Sheep extends FlxSprite{
 	public var maxJumpSpeed:Float;
 	public var activeGravity:Float;
 	public var maxGravity:Float;
-	
-	//Map reference
-	public var map:MapGen;
 
 	//Position
 	public var position = new Array<Float>();
@@ -65,7 +65,6 @@ class Sheep extends FlxSprite{
         activeSpeed = 0;
         jumpStart[0] = 0;
         jumpStart[1] = 0;
-
     }
 
     override public function update():Void
@@ -97,9 +96,6 @@ class Sheep extends FlxSprite{
 		}
 		checkSpeed();
 		checkJump();
-		checkCollsision();
-		//trace(isJumping + " " + jumpStart[1]);
-		//trace("X: " + this.x + " y: " + this.y);
     }
 
     private function moveLeft():Void
@@ -181,11 +177,5 @@ class Sheep extends FlxSprite{
     	if(activeGravity > maxGravity){
     		activeGravity = maxGravity;
     	}
-    }
-
-    public function checkCollsision():Void
-    {
-    	this.x = position[0];
-		this.y = position[1];
     }
 }
