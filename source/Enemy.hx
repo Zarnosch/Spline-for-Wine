@@ -3,179 +3,74 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
+import flixel.group.FlxTypedGroup;
 
-//SheepState
-enum State {
-	Running;
-	Standing;
-	Attacking;
+enum EnemyType {
+    NAZI_SHEEP;
+    NAZI_SHEEP_FLYING;
+    //SOVIET_SHEEP;
+    //SOVIET_SHEEP_FLYING;
 }
 
-enum Type {
-	SovietSheep;
-}
+class Enemy extends FlxSprite {
 
-class Enemy extends FlxSprite{
-	//Running
-	public var maxSpeed:Float;
-	public var activeSpeed:Float;
-	public var beschleunigung:Float;
-	//moveDirection (use "left" and "right")
-	public var activeMoveDirection:String;
-	public var lastMoveDirection:String;
-	//Jumping
-	public var maxJumpHeight:Float;
-	public var activeJumpSpeed:Float;
-	public var minJumpSpeed:Float;
-	public var maxJumpSpeed:Float;
-	public var activeGravity:Float;
-	public var maxGravity:Float;
+    var sheepType: EnemyType;
+    var moveSpeed: Float;
 
-	//Position
-	public var position = new Array<Float>();
+    var attack: Float = 0;
+    var attackTimer: Float;
 
-	//activeSheepSate
-	var activeSheepSate:State;
-	//lastSheepState
-	var lastSheepState:State;
-	//jumpToggel
-	var isJumping:Bool;
-	//jump startPoint
-	var jumpStart = new Array<Float>();
+    public var enemyShots = new FlxTypedGroup();
 
-	public function new()
+    public function new(x: Float, y: Float, enemyType: EnemyType) 
     {
-        super(0, 0);
-        makeGraphic(32, 32, FlxColor.WHITE);
-        position[0] = 0;
-        position[1] = 0;
-        beschleunigung = 0.1;
-        activeGravity = 0.2;
-        maxGravity = 1;
-        isJumping = false;
-        activeSheepSate = State.Standing;
-        lastSheepState = State.Standing;
-        activeMoveDirection = 'none';
-        lastMoveDirection = 'none';
-        maxJumpHeight = 120;
-        activeJumpSpeed = 1;
-        minJumpSpeed = 0.2;
-        maxJumpSpeed = 2;
-        maxSpeed = 2;
-        activeSpeed = 0;
-        jumpStart[0] = 0;
-        jumpStart[1] = 0;
+        super(x,y);
+        loadGraphic("assets/images/nazi_sheep_map.png", true, 32, 32);
+
+	    animation.add("nazi_tank", [0, 1, 2, 3, 4, 5, 6, 7], 5, true);
+        animation.add("nazi_air", [8, 9, 10, 11, 12, 13, 14, 15], 10, true);
+
+        sheepType = enemyType;
+
+        switch(sheepType) {
+            case EnemyType.NAZI_SHEEP: 
+                animation.play("nazi_tank");
+                moveSpeed = 0.5;
+                attackTimer = 10;
+            case EnemyType.NAZI_SHEEP_FLYING: 
+                animation.play("nazi_air");
+                moveSpeed = 0.8;
+                attackTimer = 40;
+        }
+
+        flipX = true;
     }
 
-    override public function update():Void
+    override public function update()
     {
+        x -= moveSpeed;
         super.update();
-        updateMovement();
-        checkGravity();
-        checkSpeed();
+
+        attack++;
+
+        if (attack > attackTimer) {
+            dropBomb();
+            attack = 0;
+        }
     }
 
-    override public function destroy():Void
+    function dropBomb() 
+    {
+        switch(sheepType) {
+            case EnemyType.NAZI_SHEEP: 
+                enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.GATLING, true));
+            case EnemyType.NAZI_SHEEP_FLYING:
+                enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.ROCKET, false, true));
+        }
+    }
+
+    override public function destroy()
     {
         super.destroy();
-    }
-
-    public function updateMovement():Void
-    {
-    	if (FlxG.keys.pressed.A)
-		{
-    		moveLeft();
-		}
-    	if (FlxG.keys.pressed.D)
-		{
-    		moveRight();
-		}
-    	if (FlxG.keys.pressed.SPACE)
-		{
-			jump();
-		}
-		checkSpeed();
-		checkJump();
-    }
-
-    private function moveLeft():Void
-    {	
-    	lastSheepState = activeSheepSate;
-    	activeSheepSate = State.Running;
-    	lastMoveDirection = activeMoveDirection;
-    	activeMoveDirection = 'left';
-    	position[0] -= activeSpeed;
-    }
-
-    private function moveRight():Void
-    {
-    	lastSheepState = activeSheepSate;
-    	activeSheepSate = State.Running;
-    	lastMoveDirection = activeMoveDirection;
-    	activeMoveDirection = 'right';
-    	position[0] += activeSpeed;
-    }
-
-    private function jump():Void
-    {
-    	//triggers the jump
-    	if(!isJumping){
-    		//trace("Triggered Jump");
-    		jumpStart = position.copy();
-    		isJumping = true;
-    	}   	
-    }
-
-    private function checkSpeed():Void
-    {
-    	//calculate a smooth movement
-    	if (activeSpeed > maxSpeed){
-    		activeSpeed = maxSpeed;
-    	}
-    	if(activeMoveDirection != lastMoveDirection){
-    		activeSpeed = 0;
-    	}
-    	else {
-    		activeSpeed = beschleunigung + activeSpeed * 1.05;
-    	}    	
-    }
-
-    private function checkJump():Void
-    {
-    	//doing the jump
-    	if(isJumping){
-    		if(position[1] >= jumpStart[1] - maxJumpHeight && position[1] >= 0){
-    			activeJumpSpeed -= (activeJumpSpeed * 0.005);
-    			if(activeJumpSpeed > maxJumpSpeed){
-    				activeJumpSpeed = maxJumpSpeed;
-    			}
-    			else if(activeJumpSpeed < minJumpSpeed){
-    					activeJumpSpeed = minJumpSpeed;
-    			}
-    			position[1] -= activeJumpSpeed;
-    		}
-    		else{
-    			isJumping = false;
-    			activeJumpSpeed = maxJumpSpeed;
-    			activeGravity = 0.2;
-    		}
-    	}
-    	else {
-    		position[1] += activeGravity;
-    	}
-    }
-
-    public function setLanded():Void
-    {
-    	isJumping = false;
-    	activeGravity = 0.2;
-    }
-
-    public function checkGravity():Void
-    {
-    	activeGravity = activeGravity * 1.02;
-    	if(activeGravity > maxGravity){
-    		activeGravity = maxGravity;
-    	}
     }
 }
