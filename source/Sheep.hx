@@ -46,7 +46,10 @@ class Sheep extends FlxSprite{
 	public function new()
     {
         super(0, 0);
-        makeGraphic(32, 32, FlxColor.WHITE);
+        //makeGraphic(32, 32, FlxColor.WHITE);
+        loadGraphic("assets/images/sheep_flying.png", true, 32, 32);
+        animation.add("flying", [0, 1, 2, 3, 4, 5, 6], 5, true);
+        animation.play("flying");
         position[0] = 0;
         position[1] = 0;
         beschleunigung = 0.1;
@@ -86,10 +89,12 @@ class Sheep extends FlxSprite{
     	if (FlxG.keys.pressed.A)
 		{
     		moveLeft();
+            flipX = true;
 		}
     	if (FlxG.keys.pressed.D)
 		{
     		moveRight();
+            flipX = false;
 		}
     	if (FlxG.keys.pressed.SPACE)
 		{
