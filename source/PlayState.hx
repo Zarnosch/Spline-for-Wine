@@ -7,6 +7,8 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
+import flixel.FlxCamera;
+import flixel.util.FlxRect;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -33,6 +35,8 @@ class PlayState extends FlxState
         add(map);
 		
 		add(map.collGrounds);
+		add(map.visGrounds);
+		add(map.debugFus);
 
 		for (val in map.visGrounds){
 			//trace(val + " test");
@@ -40,18 +44,13 @@ class PlayState extends FlxState
 		}
 
         // create Player
-		sheep = new Sheep();
+		sheep = new Sheep(0, 900);
 		add(sheep);
         
         // create Weapons
 		weapons = new Weapon();
 		add(weapons);
         
-        
-		/*for (val in map.collGrounds){
-			//trace(val + " test");
-			add(val);
-		}*/
 
 	}
 	
@@ -70,6 +69,9 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		FlxG.camera.follow(sheep, FlxCamera.STYLE_TOPDOWN, 1);
+		FlxG.worldBounds.set(sheep.x, sheep.y, 2000, 2000);
+		map.cameraX = sheep.x;
 		//map.update();
 		sheep.map = map;
 		FlxG.collide(sheep, map.collGrounds, sheep.setLanded);

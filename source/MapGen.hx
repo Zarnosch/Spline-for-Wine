@@ -5,24 +5,35 @@ import flixel.util.FlxColor;
 import flixel.FlxBasic;
 import flixel.util.FlxPoint;
 import flixel.group.FlxTypedGroup;
+import flixel.util.FlxRandom;
 
 class MapGen extends FlxBasic {
 	
 	public var collGrounds = new FlxTypedGroup<FlxSprite>();
-	public var visGrounds = new Array<FlxSprite>();
+	public var visGrounds = new FlxTypedGroup<FlxSprite>();
+	public var debugFus = new FlxTypedGroup<FlxSprite>();
 	
-	private var activeX:Int;
-	private var activeY:Int;
+	private var activeX:Int = 0;
+	private var activeY:Int = 0;
+	private var minHeight:Int = 1000;
+	private var maxHeight:Int = 0;
+	private var Range:Float = 800;
+	private var maxRange:Int = 100;
+	
+	public var cameraX:Float = 0;
 
-	public function new(minHeight:Int, MaxHeight:Int)
+	public function new(minHeight:Int, maxHeight:Int)
     {
     	super();
-    	createGround(0, 200, 400, 15, 35);
+		activeX = 0;
+		activeY = minHeight - 15;
+    	//createGround(activeX, activeY, maxRange, minHeight - activeY, 35);		
     }
 
     override public function update():Void
     {
         super.update();
+		updateWorld();
     }
 
     override public function destroy():Void
@@ -30,9 +41,14 @@ class MapGen extends FlxBasic {
         super.destroy();
     }
 	
-	function createWorld():Void
+	function updateWorld():Void
 	{
-		
+		if (activeX < cameraX + Range) {
+			activeY = minHeight - FlxRandom.intRanged(-10, 30);			
+			createGround(activeX, activeY, FlxRandom.intRanged(20, maxRange), 1000 - activeY, 35);
+			minHeight = activeY;
+			activeX += maxRange + FlxRandom.intRanged(10, 150);
+		}
 	}
 
     function createGround(x:Int, y:Int, w:Int, h:Int, depth:Int)
@@ -43,15 +59,26 @@ class MapGen extends FlxBasic {
     	ground.y = y-depth;
 
         //ground.updateHitbox();
-        visGrounds.push(ground);
-
+        visGrounds.add(ground);
     	var collGround = new FlxSprite();
     	collGround.makeGraphic(w, h, FlxColor.BROWN);
-    	collGround.x = x;
-    	collGround.y = y;
+		collGround.setPosition(x, y);
 		collGround.immovable = true;
 
 		//collGround.updateHitbox();
     	collGrounds.add(collGround);
+		//DebugFu
+		debugFu(x, y);
+		debugFu(x + w, y);
+		debugFu(x, y + h);
+		debugFu(x + w, y + h);
     }
+	
+	function debugFu(x:Int, y:Int):Void
+	{
+		var fu = new FlxSprite();
+		fu.makeGraphic(4, 4, FlxColor.GREEN);
+		fu.setPosition(x, y);
+		debugFus.add(fu);
+	}
 }

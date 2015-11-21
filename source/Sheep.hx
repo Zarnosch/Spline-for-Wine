@@ -49,9 +49,9 @@ class Sheep extends FlxSprite{
 	var jumpStart = new Array<Float>();
 
 
-	public function new()
+	public function new(x:Int, y:Int)
     {
-        super(0, 0);
+        super(x, y);
         //makeGraphic(32, 32, FlxColor.WHITE);
         loadGraphic("assets/images/sheep_flying.png", true, 32, 32);
         animation.add("flying", [0, 1, 2, 3, 4, 5, 6], 5, true);
