@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
+import flixel.group.FlxTypedGroup;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -19,6 +20,8 @@ class PlayState extends FlxState
 
 	var sheep:Sheep;
 	var weapons:Weapon;
+
+    var enemies = new FlxTypedGroup<Enemy>();
 
 	var w = 1;
 	public var map:MapGen;
@@ -48,11 +51,10 @@ class PlayState extends FlxState
 		add(weapons);
         add(weapons.bullets);
         
-        
-		/*for (val in map.collGrounds){
-			//trace(val + " test");
-			add(val);
-		}*/
+        var enemy =  new Enemy(0, 100, Enemy.EnemyType.NAZI_SHEEP);
+        add(enemy.enemyShots);
+        enemies.add(enemy);
+        add(enemies);
 
 	}
 	

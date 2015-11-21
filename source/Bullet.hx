@@ -16,7 +16,9 @@ class Bullet extends FlxSprite{
     var speed: Float;
     var flipped: Bool = false;
 
-    public function new(x: Float, y: Float, bt: BulletType, f: Bool):Void
+    var fromEnemy: Bool = false;
+
+    public function new(x: Float, y: Float, bt: BulletType, f: Bool, ?enemy: Bool):Void
     {
         super((x + 5), (y + 1));
         bulletType = bt;
@@ -29,6 +31,8 @@ class Bullet extends FlxSprite{
 
         flipped = f;
         flipX = flipped;
+
+        fromEnemy = enemy;
 
         switch(bt) {
             case BulletType.PISTOL: 
@@ -49,11 +53,15 @@ class Bullet extends FlxSprite{
     override public function update():Void
     {
         super.update();
-
-        if(flipped) {
-            x -= speed;
+        if (!fromEnemy) {
+            if(flipped) {
+                x -= speed;
+            } else {
+                x += speed;
+            }
         } else {
-            x += speed;
+            y += speed;
+            angle = 90;
         }
         
         if (x > FlxG.camera.x + FlxG.camera.width + 200) {
