@@ -10,8 +10,11 @@ class MapGen extends FlxBasic {
 	
 	public var collGrounds = new FlxTypedGroup<FlxSprite>();
 	public var visGrounds = new Array<FlxSprite>();
+	
+	private var activeX:Int;
+	private var activeY:Int;
 
-	public function new()
+	public function new(minHeight:Int, MaxHeight:Int)
     {
     	super();
     	createGround(0, 200, 400, 15, 35);
@@ -26,6 +29,11 @@ class MapGen extends FlxBasic {
     {
         super.destroy();
     }
+	
+	function createWorld():Void
+	{
+		
+	}
 
     function createGround(x:Int, y:Int, w:Int, h:Int, depth:Int)
     {
@@ -41,6 +49,7 @@ class MapGen extends FlxBasic {
     	collGround.makeGraphic(w, h, FlxColor.BROWN);
     	collGround.x = x;
     	collGround.y = y;
+		collGround.immovable = true;
 
 		//collGround.updateHitbox();
     	collGrounds.add(collGround);

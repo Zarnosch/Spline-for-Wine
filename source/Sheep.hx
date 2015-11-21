@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxColor;
@@ -27,12 +28,16 @@ class Sheep extends FlxSprite{
 	public var maxJumpSpeed:Float;
 	public var activeGravity:Float;
 	public var maxGravity:Float;
+	public var doubbleJump:Bool;
+	// for jumping&shit
+	var isOnGround:Bool;
 	
 	//Map reference
 	public var map:MapGen;
 
 	//Position
 	public var position = new Array<Float>();
+	private var lastPosition = new Array<Float>();
 
 	//activeSheepSate
 	var activeSheepSate:State;
@@ -43,6 +48,7 @@ class Sheep extends FlxSprite{
 	//jump startPoint
 	var jumpStart = new Array<Float>();
 
+
 	public function new()
     {
         super(0, 0);
@@ -50,24 +56,28 @@ class Sheep extends FlxSprite{
         loadGraphic("assets/images/sheep_flying.png", true, 32, 32);
         animation.add("flying", [0, 1, 2, 3, 4, 5, 6], 5, true);
         animation.play("flying");
+		lastPosition[0] = 0;
+		lastPosition[1] = 0;
         position[0] = 0;
         position[1] = 0;
-        beschleunigung = 0.1;
-        activeGravity = 0.2;
-        maxGravity = 1;
+        beschleunigung = 0.05;
+        activeGravity = 0.6;
+        maxGravity = 4;
         isJumping = false;
         activeSheepSate = State.Standing;
         lastSheepState = State.Standing;
         activeMoveDirection = 'none';
         lastMoveDirection = 'none';
-        maxJumpHeight = 120;
-        activeJumpSpeed = 1;
+        maxJumpHeight = 50;
+		maxJumpSpeed = 4;
+        activeJumpSpeed = maxJumpSpeed;
         minJumpSpeed = 0.2;
-        maxJumpSpeed = 2;
         maxSpeed = 2;
         activeSpeed = 0;
         jumpStart[0] = 0;
         jumpStart[1] = 0;
+		isOnGround = false;
+		doubbleJump = true;
 
     }
 
@@ -96,7 +106,7 @@ class Sheep extends FlxSprite{
     		moveRight();
             flipX = false;
 		}
-    	if (FlxG.keys.pressed.SPACE)
+    	if (FlxG.keys.justPressed.SPACE)
 		{
 			jump();
 		}
@@ -113,7 +123,7 @@ class Sheep extends FlxSprite{
     	activeSheepSate = State.Running;
     	lastMoveDirection = activeMoveDirection;
     	activeMoveDirection = 'left';
-    	position[0] -= activeSpeed;
+    	this.x -= activeSpeed;
     }
 
     private function moveRight():Void
@@ -122,17 +132,26 @@ class Sheep extends FlxSprite{
     	activeSheepSate = State.Running;
     	lastMoveDirection = activeMoveDirection;
     	activeMoveDirection = 'right';
-    	position[0] += activeSpeed;
+    	this.x += activeSpeed;
     }
 
     private function jump():Void
     {
     	//triggers the jump
-    	if(!isJumping){
+    	if(!isJumping && isOnGround){
     		//trace("Triggered Jump");
-    		jumpStart = position.copy();
+    		jumpStart[0] = this.x;
+			jumpStart[1] = this.y;
     		isJumping = true;
-    	}   	
+			isOnGround = false;
+    	}
+		else if ((doubbleJump && !isJumping && !isOnGround)) {
+			doubbleJump = false;
+			jumpStart[0] = this.x;
+			jumpStart[1] = this.y;
+    		isJumping = true;
+			isOnGround = false;
+		}
     }
 
     private function checkSpeed():Void
@@ -153,7 +172,7 @@ class Sheep extends FlxSprite{
     {
     	//doing the jump
     	if(isJumping){
-    		if(position[1] >= jumpStart[1] - maxJumpHeight && position[1] >= 0){
+    		if(this.y >= jumpStart[1] - maxJumpHeight && this.y >= 0){
     			activeJumpSpeed -= (activeJumpSpeed * 0.005);
     			if(activeJumpSpeed > maxJumpSpeed){
     				activeJumpSpeed = maxJumpSpeed;
@@ -161,28 +180,30 @@ class Sheep extends FlxSprite{
     			else if(activeJumpSpeed < minJumpSpeed){
     					activeJumpSpeed = minJumpSpeed;
     			}
-    			position[1] -= activeJumpSpeed;
+    			this.y -= activeJumpSpeed;
     		}
-    		else{
-    			isJumping = false;
+    		else {
+			    isJumping = false;	
     			activeJumpSpeed = maxJumpSpeed;
-    			activeGravity = 0.2;
+    			activeGravity = 0.6;
     		}
     	}
     	else {
-    		position[1] += activeGravity;
+    		this.y += activeGravity;
     	}
     }
 
-    public function setLanded():Void
+    public function setLanded(?obj1:FlxSprite, ?obj2:FlxSprite):Void
     {
     	isJumping = false;
-    	activeGravity = 0.2;
+    	activeGravity = 0.6;
+		isOnGround = true;
+		doubbleJump = true;
     }
 
     public function checkGravity():Void
     {
-    	activeGravity = activeGravity * 1.02;
+    	activeGravity = activeGravity * 1.05;
     	if(activeGravity > maxGravity){
     		activeGravity = maxGravity;
     	}
@@ -190,7 +211,42 @@ class Sheep extends FlxSprite{
 
     public function checkCollsision():Void
     {
-    	this.x = position[0];
-		this.y = position[1];
+		/*
+		if (FlxG.overlap(this, map.collGrounds, collision)) {
+			
+		}
+		*/
+		//else {
+			
+		//}
+		lastPosition = position;
+		
     }
+	
+	private function collision(?obj1:FlxSprite, ?obj2:FlxSprite):Void
+	{
+		/*
+		var temp:FlxSprite = new FlxSprite();
+		// Obj1 is the sheep (hopefully) if not, swap!		
+		if (obj2 == flixel.FlxSprite) {
+			temp = obj2;
+			obj2 = obj1;
+			obj1 = temp;
+			trace("Swapped!");
+		}
+		var x1:Float = obj1.x;
+		var y1:Float = obj1.y;
+		var w1:Float = obj1.width;
+		var h1:Float = obj1.height;
+		var x2:Float = obj2.x;
+		var y2:Float = obj2.y;
+		var w2:Float = obj2.width;
+		var h2:Float = obj2.height;
+		if (y1 > y2) {
+			trace("Ob1 is over Obj 2");			
+		}
+		trace(obj1 + " ||||| " + obj2 );
+		position = lastPosition;
+		*/
+	}
 }
