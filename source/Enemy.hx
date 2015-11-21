@@ -42,11 +42,13 @@ class Enemy extends FlxSprite {
                 moveSpeed = 0.8;
                 attackTimer = 40;
         }
+
+        flipX = true;
     }
 
     override public function update()
     {
-        x += moveSpeed;
+        x -= moveSpeed;
         super.update();
 
         attack++;
@@ -61,7 +63,7 @@ class Enemy extends FlxSprite {
     {
         switch(sheepType) {
             case EnemyType.NAZI_SHEEP: 
-                enemyShots.add(new Bullet((x+4), (y+5), Bullet.BulletType.GATLING, false));
+                enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.GATLING, true));
             case EnemyType.NAZI_SHEEP_FLYING:
                 enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.ROCKET, false, true));
         }

@@ -51,7 +51,7 @@ class PlayState extends FlxState
 		add(weapons);
         add(weapons.bullets);
         
-        var enemy =  new Enemy(0, 100, Enemy.EnemyType.NAZI_SHEEP);
+        var enemy =  new Enemy(300, 100, Enemy.EnemyType.NAZI_SHEEP);
         add(enemy.enemyShots);
         enemies.add(enemy);
         add(enemies);
