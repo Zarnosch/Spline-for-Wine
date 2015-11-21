@@ -35,6 +35,7 @@ class PlayState extends FlxState
         // create Weapons
 		weapons = new Weapon();
 		add(weapons);
+        add(weapons.bullets);
         
         // map gen
 		map = new MapGen();	

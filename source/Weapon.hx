@@ -9,11 +9,12 @@ class Weapon extends FlxSprite {
 	var xPos:Float = 0;
 	var yPos:Float = 0;
 
+    var shotTimer: Float = 10.0;
+    var timer: Float = 0;
+
 	var currentEquippedWeapon = 1;
 
-	var poolSize = 500;
-	//var bullets = new FlxTypedGroup<Bullet>(poolSize);
-
+	public var bullets = new FlxTypedGroup<Bullet>();
 
 	public function new():Void
 	{
@@ -44,11 +45,6 @@ class Weapon extends FlxSprite {
 	    this.xPos = xPos + 23;
 	    this.yPos = yPos + 12;
 	}
-
-	/*public function setWeapon(weaponName:String):Void
-	{
-		animation.play(weaponName);
-	}*/
 
 	public function setWeaponNumber(weaponNumber:Int):Void
 	{
@@ -88,6 +84,17 @@ class Weapon extends FlxSprite {
 		}
 		
 		currentEquippedWeapon = weaponNumber;
+
+        if (currentEquippedWeapon <= 4) {
+            shotTimer = 10.0;
+        } else if(currentEquippedWeapon > 4 && currentEquippedWeapon <= 8) {
+            shotTimer = 5.0;
+        } else if(currentEquippedWeapon > 8 && currentEquippedWeapon <= 12) {
+            shotTimer = 8.0;
+        } else if(currentEquippedWeapon > 12) {
+            shotTimer = 20.0; 
+        }
+
 	}
 
 	public function flipPos(isFlipped:Bool):Void
@@ -104,8 +111,19 @@ class Weapon extends FlxSprite {
 	    x = xPos;
 	    y = yPos;
 
-	    if (FlxG.mouse.pressed) {
-	    	
+        timer++;
+
+	    if (timer > shotTimer && FlxG.mouse.pressed) {
+            if (currentEquippedWeapon <= 4) {
+                bullets.add(new Bullet(x, y, Bullet.BulletType.PISTOL, flipX));
+            } else if(currentEquippedWeapon > 4 && currentEquippedWeapon <= 8) {
+                bullets.add(new Bullet(x, y, Bullet.BulletType.GATLING, flipX));
+            } else if(currentEquippedWeapon > 8 && currentEquippedWeapon <= 12) {
+                bullets.add(new Bullet(x, y, Bullet.BulletType.TESLA, flipX));
+            } else if(currentEquippedWeapon > 12) {
+                bullets.add(new Bullet(x, y, Bullet.BulletType.ROCKET, flipX));
+            }
+            timer = 0;
 	    }
 	}
 
