@@ -123,7 +123,7 @@ ApplicationMain.init = function() {
 	if(total == 0) ApplicationMain.start();
 };
 ApplicationMain.main = function() {
-	ApplicationMain.config = { build : "363", company : "HaxeFlixel", file : "Spline for Wine", fps : 60, name : "Spline for Wine", orientation : "portrait", packageName : "com.example.myapp", version : "0.0.1", windows : [{ antialiasing : 0, background : 16748545, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, parameters : "{}", resizable : true, stencilBuffer : true, title : "Spline for Wine", vsync : true, width : 640, x : null, y : null}]};
+	ApplicationMain.config = { build : "372", company : "HaxeFlixel", file : "Spline for Wine", fps : 60, name : "Spline for Wine", orientation : "portrait", packageName : "com.example.myapp", version : "0.0.1", windows : [{ antialiasing : 0, background : 16748545, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, parameters : "{}", resizable : true, stencilBuffer : true, title : "Spline for Wine", vsync : true, width : 640, x : null, y : null}]};
 };
 ApplicationMain.start = function() {
 	var hasMain = false;
@@ -3586,6 +3586,9 @@ Enemy.prototype = $extend(flixel_FlxSprite.prototype,{
 				var _g1 = this;
 				_g1.set_x(_g1.x + this.moveSpeed);
 			}
+		} else {
+			var _g2 = this;
+			_g2.set_x(_g2.x - this.moveSpeed);
 		}
 		this.set_flipX(this.flipped);
 		this.attack++;
@@ -3801,6 +3804,7 @@ MapGen.prototype = $extend(flixel_FlxBasic.prototype,{
 			var length = flixel_util_FlxRandom.intRanged(20,this.maxRange);
 			this.createGround(this.activeX,this.activeY,length,1000 - this.activeY,15);
 			if(this.activeX > 400 && flixel_util_FlxRandom.floatRanged(0,100) < 50) this.addDownEnemy(this.activeX,this.activeY - 35,this.activeX - 10,this.activeX + length - 10);
+			if(this.activeX > 400 && flixel_util_FlxRandom.floatRanged(0,100) < 25) this.addFlyEnemy(this.activeX,this.activeY - 80);
 			this.minHeight = this.activeY;
 			this.activeX += this.maxRange + flixel_util_FlxRandom.intRanged(10,130);
 		}
@@ -3846,6 +3850,12 @@ MapGen.prototype = $extend(flixel_FlxBasic.prototype,{
 	}
 	,addDownEnemy: function(x,y,xb,yb) {
 		var enemy = new Enemy(x,y,EnemyType.NAZI_SHEEP,true,xb,yb);
+		enemy.sheep = this.sheep;
+		this.enemieShots.add(enemy.enemyShots);
+		this.enemies.add(enemy);
+	}
+	,addFlyEnemy: function(x,y) {
+		var enemy = new Enemy(x,y,EnemyType.NAZI_SHEEP_FLYING);
 		enemy.sheep = this.sheep;
 		this.enemieShots.add(enemy.enemyShots);
 		this.enemies.add(enemy);
@@ -4423,7 +4433,7 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 	,update: function() {
 		flixel_FlxState.prototype.update.call(this);
 		flixel_FlxG.camera.follow(this.sheep,2,null,1);
-		flixel_FlxG.worldBounds.set(this.sheep.x,this.sheep.y,2000,2000);
+		flixel_FlxG.worldBounds.set(this.sheep.x - 300,this.sheep.y,2000,2000);
 		this.map.cameraX = this.sheep.x;
 		this.sheep.map = this.map;
 		flixel_FlxG.overlap(this.sheep,this.map.collGrounds,($_=this.sheep,$bind($_,$_.setLanded)),flixel_FlxObject.separate);
@@ -4435,6 +4445,11 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		this.weapons.flipPos(this.sheep.flipX);
 		if(this.score > (this.w + 2) * 100) this.w++;
 		this.weapons.setWeaponNumber(this.w);
+		var $it0 = new flixel_group_FlxTypedGroupIterator(this.map.visGrounds.members,null);
+		while( $it0.hasNext() ) {
+			var val = $it0.next();
+			if(this.sheep.x - val.x > 600) val.destroy();
+		}
 		this.ammoClip.set_y(this.ammoClipMaxY + 96 * (this.weapons.shotsFired / this.weapons.ammo));
 		this.score = this.kills * 100;
 		this.scoreText.set_text("" + this.score);
@@ -4463,20 +4478,14 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		}
 	}
 	,hurtEnemy: function(enemy,bullet) {
-		if(enemy != null && bullet != null) {
-			if(flixel_util_FlxCollision.pixelPerfectCheck(enemy,bullet,255,null)) {
-				bullet.destroy();
-				enemy.damage();
-				this.kills++;
-			}
-		}
+		bullet.destroy();
+		enemy.damage();
+		this.kills++;
 	}
 	,explode: function(ground,b) {
-		if(flixel_util_FlxCollision.pixelPerfectCheck(ground,b,255,null)) {
-			var explode = new Explosion(b.x,b.y);
-			this.add(explode);
-			b.destroy();
-		}
+		var explode = new Explosion(b.x,b.y);
+		this.add(explode);
+		b.destroy();
 	}
 	,__class__: PlayState
 });

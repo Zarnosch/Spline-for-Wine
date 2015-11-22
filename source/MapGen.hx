@@ -53,7 +53,10 @@ class MapGen extends FlxBasic {
 			createGround(activeX, activeY, length, 1000 - activeY, 15);
 			if (activeX > 400 && FlxRandom.chanceRoll(50)) {
 				addDownEnemy(activeX, activeY - 35, activeX-10, activeX + length -10);
-			}			
+			}
+			if (activeX > 400 && FlxRandom.chanceRoll(25)) {
+				addFlyEnemy(activeX, activeY - 80);
+			}
 			minHeight = activeY;
 			activeX += maxRange + FlxRandom.intRanged(10, 130);
 		}
@@ -122,6 +125,14 @@ class MapGen extends FlxBasic {
 	function addDownEnemy(x:Int, y:Int, xb:Int, yb:Int):Void
 	{
 		var enemy =  new Enemy(x, y, Enemy.EnemyType.NAZI_SHEEP, true, xb, yb);
+		enemy.sheep = sheep;
+        enemieShots.add(enemy.enemyShots);
+        enemies.add(enemy);
+	}
+	
+	function addFlyEnemy(x:Int, y:Int):Void
+	{
+		var enemy =  new Enemy(x, y, Enemy.EnemyType.NAZI_SHEEP_FLYING);
 		enemy.sheep = sheep;
         enemieShots.add(enemy.enemyShots);
         enemies.add(enemy);
