@@ -246,7 +246,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "372",
+			build: "375",
 			company: "HaxeFlixel",
 			file: "Spline for Wine",
 			fps: 60,
