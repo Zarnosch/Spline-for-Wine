@@ -73,6 +73,9 @@ class Enemy extends FlxSprite {
                 x += moveSpeed;
             }
         }
+		else {
+			x -= moveSpeed;
+		}
         flipX = flipped;
 
         attack++;
