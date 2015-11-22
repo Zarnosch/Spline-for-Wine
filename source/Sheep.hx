@@ -48,7 +48,7 @@ class Sheep extends FlxSprite{
 	//jump startPoint
 	var jumpStart = new Array<Float>();
 
-    var lives: Int = 3;
+    public var lives: Int = 3;
 
 	public function new(x:Int, y:Int)
     {
@@ -251,12 +251,13 @@ class Sheep extends FlxSprite{
 		*/
 	}
 
-    public function damage() 
+    public function damage():Bool 
     {
         lives--;
         FlxG.camera.shake(0.05, 0.2);
-        if (lives <= 0) {
+        if (lives < 0) {
             this.destroy();
         }
+        return true;
     }
 }

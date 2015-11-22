@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.group.FlxTypedGroup;
 import flixel.FlxCamera;
+import flixel.util.FlxColor;
 
 class Weapon extends FlxSprite {
 
@@ -14,6 +15,9 @@ class Weapon extends FlxSprite {
     var timer: Float = 0;
 
 	var currentEquippedWeapon = 1;
+
+    public var ammo = 10;
+    public var shotsFired = 0;
 
 	public var bullets = new FlxTypedGroup<Bullet>();
 
@@ -52,36 +56,52 @@ class Weapon extends FlxSprite {
 		switch (weaponNumber) {
 			case 1:
 				animation.play("pistol_lame");
+                ammo = 10;
 			case 2:
 				animation.play("pistol_better");
+                ammo = 20;
 			case 3:
 				animation.play("pistol_cool");
+                ammo = 30;
 			case 4:
 				animation.play("pistol_awesome");
+                ammo = 40;
 			case 5:
 				animation.play("gatling_lame");
+                ammo = 100;
 			case 6:
 				animation.play("gatling_better");
+                ammo = 200;
 			case 7:
 				animation.play("gatling_cool");
+                ammo = 300;
 			case 8:
 				animation.play("gatling_awesome");
+                ammo = 400;
 			case 9:
 				animation.play("tesla_lame");
+                ammo = 500;
 			case 10:
 				animation.play("tesla_better");
+                ammo = 1000;
 			case 11:
 				animation.play("tesla_cool");
+                ammo = 1500;
 			case 12:
 				animation.play("tesla_awesome");
+                ammo = 2000;
 			case 13:
 				animation.play("rocket_lame");
+                ammo = 5;
 			case 14:
 				animation.play("rocket_better");
+                ammo = 10;
 			case 15:
 				animation.play("rocket_cool");
+                ammo = 15;
 			case 16:
 				animation.play("rocket_awesome");
+                ammo = 20;
 		}
 		
 		currentEquippedWeapon = weaponNumber;
@@ -116,14 +136,20 @@ class Weapon extends FlxSprite {
 
 	    if (timer > shotTimer && FlxG.mouse.pressed) {
             FlxG.camera.shake(0.01, 0.05, true, FlxCamera.SHAKE_HORIZONTAL_ONLY);
-            if (currentEquippedWeapon <= 4) {
-                bullets.add(new Bullet(x, y, Bullet.BulletType.PISTOL, flipX));
-            } else if(currentEquippedWeapon > 4 && currentEquippedWeapon <= 8) {
-                bullets.add(new Bullet(x, y, Bullet.BulletType.GATLING, flipX));
-            } else if(currentEquippedWeapon > 8 && currentEquippedWeapon <= 12) {
-                bullets.add(new Bullet(x, y, Bullet.BulletType.TESLA, flipX));
-            } else if(currentEquippedWeapon > 12) {
-                bullets.add(new Bullet(x, y, Bullet.BulletType.ROCKET, flipX));
+            shotsFired++;
+            if (shotsFired < ammo) {
+                if (currentEquippedWeapon <= 4) {
+                    bullets.add(new Bullet(x, y, Bullet.BulletType.PISTOL, flipX));
+                } else if(currentEquippedWeapon > 4 && currentEquippedWeapon <= 8) {
+                    bullets.add(new Bullet(x, y, Bullet.BulletType.GATLING, flipX));
+                } else if(currentEquippedWeapon > 8 && currentEquippedWeapon <= 12) {
+                    bullets.add(new Bullet(x, y, Bullet.BulletType.TESLA, flipX));
+                } else if(currentEquippedWeapon > 12) {
+                    bullets.add(new Bullet(x, y, Bullet.BulletType.ROCKET, flipX));
+                }
+            } else {
+                FlxG.camera.flash(FlxColor.WHITE, 0.05);
+                shotsFired = 0;
             }
             timer = 0;
 	    }

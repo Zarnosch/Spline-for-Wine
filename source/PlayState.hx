@@ -10,6 +10,8 @@ import flixel.util.FlxColor;
 import flixel.FlxCamera;
 import flixel.util.FlxRect;
 import flixel.group.FlxTypedGroup;
+import flixel.util.FlxPoint;
+import flixel.util.FlxColor;
 
 
 /**
@@ -29,6 +31,20 @@ class PlayState extends FlxState
 
 	var w = 1;
 	public var map:MapGen;
+
+    var live1: FlxSprite;
+    var live2: FlxSprite;
+    var live3: FlxSprite;
+    var dead1: FlxSprite;
+    var dead2: FlxSprite;
+    var dead3: FlxSprite;
+    var scoreBoard: FlxSprite;
+    var ammoClip: FlxSprite;
+    var ammoClipMaxY: Float = 144;
+
+    var score: Int = 0;
+    var scoreText: FlxText;
+    var kills: Int = 0;
 
 	override public function create():Void
 	{
@@ -62,6 +78,44 @@ class PlayState extends FlxState
         add(enemies);
 		add(enemieShots);
 		map.sheep = sheep;
+
+        live1 = new FlxSprite(2, 2, "assets/images/sheep_head.png");
+        live1.scrollFactor.set(0,0);
+        add(live1);
+
+        live2 = new FlxSprite(34, 2, "assets/images/sheep_head.png");
+        live2.scrollFactor.set(0,0);
+        add(live2);
+
+        live3 = new FlxSprite(66, 2, "assets/images/sheep_head.png");
+        live3.scrollFactor.set(0,0);
+        add(live3);
+
+        dead1 = new FlxSprite(2, 2, "assets/images/sheep_head_dead.png");
+        dead2 = new FlxSprite(32, 2, "assets/images/sheep_head_dead.png");
+        dead3 = new FlxSprite(66, 2, "assets/images/sheep_head_dead.png");
+        dead1.scrollFactor.set(0,0);
+        dead2.scrollFactor.set(0,0);
+        dead3.scrollFactor.set(0,0);
+        dead1.visible = false;
+        dead2.visible = false;
+        dead3.visible = false;
+        add(dead1);
+        add(dead2);
+        add(dead3);
+
+        scoreBoard = new FlxSprite(146, 0, "assets/images/score_board.png");
+        scoreBoard.scrollFactor.set(0,0);
+        add(scoreBoard);
+
+        scoreText = new FlxText(160, 5, 200, "", 10, true);
+        scoreText.scrollFactor.set(0,0);
+        scoreText.text = "" + score;
+        add(scoreText);
+
+        ammoClip = new FlxSprite(253, ammoClipMaxY, "assets/images/ammo_clip.png");
+        ammoClip.scrollFactor.set(0,0);
+        add(ammoClip);
 	}
 	
 	/**
@@ -95,25 +149,48 @@ class PlayState extends FlxState
 		weapons.flipPos(sheep.flipX);
 		//weapons.update();
 
-		if (FlxG.keys.justPressed.RIGHT) {
+		/*if (FlxG.keys.justPressed.RIGHT) {
 			w++;
 		}
 		if (FlxG.keys.justPressed.LEFT) {
 			w--;
-		}
+		}*/
+
+        if (score > ((w + 2) * 100)) {
+            w++;
+        }
+
 		weapons.setWeaponNumber(w);
 		for (val in map.visGrounds) {
 			if (sheep.x - val.x > 600) {
 				val.destroy();
 			}
 		}		
+
+        ammoClip.y = ammoClipMaxY + 96 * (weapons.shotsFired/weapons.ammo);
+        score = kills * 100;
+        scoreText.text = "" + score;
 	}	
 
     function hurtPlayer(player: Sheep, bullet: Bullet) {
         // TODO: explode
-		if (FlxG.pixelPerfectOverlap(player, bullet, 255)) {
+
+        if (FlxG.pixelPerfectOverlap(player, bullet, 255)) {
+	        if (player.damage()) {
+	            FlxG.camera.flash(FlxColor.RED, 0.1);
+	            switch(player.lives) {
+	                case 2:
+	                    dead3.visible = true;
+	                case 1:
+	                    dead3.visible = true;
+	                    dead2.visible = true;
+	                case 0:
+	                    dead3.visible = true;
+	                    dead2.visible = true;
+	                    dead1.visible = true;
+	            }
+	        }
 			bullet.destroy();
-			player.damage();
 		}
         
     }
@@ -123,6 +200,7 @@ class PlayState extends FlxState
 		if (FlxG.pixelPerfectOverlap(enemy, bullet, 255)) {
 			bullet.destroy();
 			enemy.damage();
+            kills++;
 		}        
     }
 
