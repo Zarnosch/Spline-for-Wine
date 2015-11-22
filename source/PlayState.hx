@@ -102,6 +102,11 @@ class PlayState extends FlxState
 			w--;
 		}
 		weapons.setWeaponNumber(w);
+		for (val in map.visGrounds) {
+			if (sheep.x - val.x > 600) {
+				val.destroy();
+			}
+		}		
 	}	
 
     function hurtPlayer(player: Sheep, bullet: Bullet) {

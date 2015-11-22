@@ -18,10 +18,18 @@ class AssetData {
 			
 			path.set ("assets/data/data-goes-here.txt", "assets/data/data-goes-here.txt");
 			type.set ("assets/data/data-goes-here.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/images/explosion.png", "assets/images/explosion.png");
+			type.set ("assets/images/explosion.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/gatling.png", "assets/images/gatling.png");
 			type.set ("assets/images/gatling.png", Reflect.field (AssetType, "image".toUpperCase ()));
-			path.set ("assets/images/images-go-here.txt", "assets/images/images-go-here.txt");
-			type.set ("assets/images/images-go-here.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/images/nazi_sheep.png", "assets/images/nazi_sheep.png");
+			type.set ("assets/images/nazi_sheep.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/nazi_sheep_flying.ase", "assets/images/nazi_sheep_flying.ase");
+			type.set ("assets/images/nazi_sheep_flying.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/nazi_sheep_flying.png", "assets/images/nazi_sheep_flying.png");
+			type.set ("assets/images/nazi_sheep_flying.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/nazi_sheep_map.png", "assets/images/nazi_sheep_map.png");
+			type.set ("assets/images/nazi_sheep_map.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/normal.png", "assets/images/normal.png");
 			type.set ("assets/images/normal.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/rocket.png", "assets/images/rocket.png");
@@ -40,6 +48,10 @@ class AssetData {
 			type.set ("assets/images/sheep_running.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/shots.ase", "assets/images/shots.ase");
 			type.set ("assets/images/shots.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/shots.png", "assets/images/shots.png");
+			type.set ("assets/images/shots.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/soviet_sheep_running.ase", "assets/images/soviet_sheep_running.ase");
+			type.set ("assets/images/soviet_sheep_running.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
 			path.set ("assets/images/tesla.png", "assets/images/tesla.png");
 			type.set ("assets/images/tesla.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/weapons.ase", "assets/images/weapons.ase");
