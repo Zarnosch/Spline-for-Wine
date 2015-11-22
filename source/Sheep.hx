@@ -257,6 +257,7 @@ class Sheep extends FlxSprite{
         FlxG.camera.shake(0.05, 0.2);
         if (lives < 0) {
             this.destroy();
+            FlxG.switchState(new GameOver());
         }
         return true;
     }

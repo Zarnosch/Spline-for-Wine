@@ -48,7 +48,7 @@ class PlayState extends FlxState
 
 	override public function create():Void
 	{
-		FlxG.camera.bgColor = FlxColor.HOT_PINK;
+		FlxG.camera.bgColor = FlxColor.GRAY;
 		super.create();
 		
 		// map gen
@@ -165,6 +165,11 @@ class PlayState extends FlxState
         ammoClip.y = ammoClipMaxY + 96 * (weapons.shotsFired/weapons.ammo);
         score = kills * 100;
         scoreText.text = "" + score;
+
+        if (sheep.y > 1050) {
+            sheep.destroy();
+            FlxG.switchState(new GameOver());
+        }
 	}	
 
     function hurtPlayer(player: Sheep, bullet: Bullet) {
