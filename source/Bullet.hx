@@ -17,6 +17,7 @@ class Bullet extends FlxSprite{
     var flipped: Bool = false;
 
     var fromEnemy: Bool = false;
+	var xstart:Float;
 
     public function new(x: Float, y: Float, bt: BulletType, f: Bool, ?enemy: Bool):Void
     {
@@ -28,7 +29,7 @@ class Bullet extends FlxSprite{
 	    animation.add("gatling", [4, 5, 6, 7], 15, true);
 	    animation.add("tesla", [28, 9, 10, 11], 15, true);
 	    animation.add("rocket", [12, 13, 14, 15], 15, true);
-
+		xstart = x;
         flipped = f;
         flipX = flipped;
 
@@ -64,7 +65,7 @@ class Bullet extends FlxSprite{
             angle = 90;
         }
         
-        if (x > FlxG.camera.x + FlxG.camera.width + 200) {
+        if (x > xstart + 400) {
             this.destroy();
         }
     }

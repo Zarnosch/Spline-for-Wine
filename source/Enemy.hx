@@ -14,6 +14,8 @@ enum EnemyType {
 
 class Enemy extends FlxSprite {
 
+	public var sheep:Sheep; 
+	
     var sheepType: EnemyType;
     var moveSpeed: Float;
 
@@ -47,11 +49,11 @@ class Enemy extends FlxSprite {
             case EnemyType.NAZI_SHEEP: 
                 animation.play("nazi_tank");
                 moveSpeed = 0.5;
-                attackTimer = 10;
+                attackTimer = 40;
             case EnemyType.NAZI_SHEEP_FLYING: 
                 animation.play("nazi_air");
                 moveSpeed = 0.8;
-                attackTimer = 40;
+                attackTimer = 80;
                 lives = 2;
         }
     }
@@ -75,7 +77,7 @@ class Enemy extends FlxSprite {
 
         attack++;
 
-        if (attack > attackTimer) {
+        if (attack > attackTimer && Math.abs(this.x - sheep.x) < 150) {
             dropBomb();
             attack = 0;
         }
