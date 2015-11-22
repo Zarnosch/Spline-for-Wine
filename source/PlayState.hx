@@ -25,7 +25,7 @@ class PlayState extends FlxState
 	var weapons:Weapon;
 
     var enemies = new FlxTypedGroup<Enemy>();
-    var enemieShots = new FlxTypedGroup<Bullet>();
+    var enemieShots = new FlxTypedGroup<FlxTypedGroup<Bullet>>();
 
 	var w = 1;
 	public var map:MapGen;
@@ -37,6 +37,8 @@ class PlayState extends FlxState
 		
 		// map gen
 		map = new MapGen(1000, 0);
+		enemies = map.enemies;
+		enemieShots = map.enemieShots;
         add(map);
 		
 		add(map.collGrounds);
@@ -57,12 +59,9 @@ class PlayState extends FlxState
 		add(weapons);
         add(weapons.bullets);
 
-        var enemy =  new Enemy(100, 860, Enemy.EnemyType.NAZI_SHEEP_FLYING, true, 0, 200);
-        enemieShots = enemy.enemyShots;
-        add(enemy.enemyShots);
-        enemies.add(enemy);
         add(enemies);
-
+		add(enemieShots);
+		map.sheep = sheep;
 	}
 	
 	/**
@@ -86,10 +85,10 @@ class PlayState extends FlxState
 		//map.update();
 		sheep.map = map;
 		FlxG.collide(sheep, map.collGrounds, sheep.setLanded);
-        FlxG.collide(enemies, weapons.bullets, hurtEnemy);
-        FlxG.collide(sheep, enemieShots, hurtPlayer);
-        FlxG.collide(map.collGrounds, weapons.bullets, explode);
-        FlxG.collide(map.collGrounds, enemieShots, explode);
+        FlxG.overlap(enemies, weapons.bullets, hurtEnemy);
+        FlxG.overlap(sheep, enemieShots, hurtPlayer);
+        FlxG.overlap(map.collGrounds, weapons.bullets, explode);
+        FlxG.overlap(map.collGrounds, enemieShots, explode);
         //FlxG.collide(weapons.bullets, enemieShots);
 	
 		weapons.setPos(sheep.x, sheep.y);
@@ -107,20 +106,27 @@ class PlayState extends FlxState
 
     function hurtPlayer(player: Sheep, bullet: Bullet) {
         // TODO: explode
-        bullet.destroy();
-        player.damage();
+		if (FlxG.pixelPerfectOverlap(player, bullet, 255)) {
+			bullet.destroy();
+			player.damage();
+		}
+        
     }
 
     function hurtEnemy(enemy: Enemy, bullet: Bullet) {
         // TODO: explode
-        bullet.destroy();
-        enemy.damage();
+		if (FlxG.pixelPerfectOverlap(enemy, bullet, 255)) {
+			bullet.destroy();
+			enemy.damage();
+		}        
     }
 
-    function explode(ground: MapGen, b: Bullet) {
+    function explode(ground: FlxSprite , b: Bullet) {
         // TODO: explosion
-        var explode = new Explosion(b.x, b.y);
-        add(explode);
-        b.destroy();
+		if (FlxG.pixelPerfectOverlap(ground, b,255)) {
+			var explode = new Explosion(b.x, b.y);
+			add(explode);
+			b.destroy();
+		}        
     }
 }
