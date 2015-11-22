@@ -25,6 +25,8 @@ class Enemy extends FlxSprite {
     var moveInBounds: Bool = false;
     var flipped: Bool = true;
 
+    var lives: Int = 1;
+
     public var enemyShots = new FlxTypedGroup();
 
     public function new(x: Float, y: Float, enemyType: EnemyType, ?bounds: Bool, ?left: Float, ?right: Float) 
@@ -50,6 +52,7 @@ class Enemy extends FlxSprite {
                 animation.play("nazi_air");
                 moveSpeed = 0.8;
                 attackTimer = 40;
+                lives = 2;
         }
     }
 
@@ -91,5 +94,14 @@ class Enemy extends FlxSprite {
     override public function destroy()
     {
         super.destroy();
+    }
+
+    public function damage()
+    {
+        lives--;
+        if (lives <= 0) {
+            this.destroy();
+            FlxG.camera.shake(0.01, 0.1);
+        }
     }
 }

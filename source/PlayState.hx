@@ -25,6 +25,7 @@ class PlayState extends FlxState
 	var weapons:Weapon;
 
     var enemies = new FlxTypedGroup<Enemy>();
+    var enemieShots = new FlxTypedGroup<Bullet>();
 
 	var w = 1;
 	public var map:MapGen;
@@ -56,7 +57,8 @@ class PlayState extends FlxState
 		add(weapons);
         add(weapons.bullets);
 
-        var enemy =  new Enemy(100, 850, Enemy.EnemyType.NAZI_SHEEP_FLYING, true, 0, 200);
+        var enemy =  new Enemy(100, 860, Enemy.EnemyType.NAZI_SHEEP_FLYING, true, 0, 200);
+        enemieShots = enemy.enemyShots;
         add(enemy.enemyShots);
         enemies.add(enemy);
         add(enemies);
@@ -84,6 +86,11 @@ class PlayState extends FlxState
 		//map.update();
 		sheep.map = map;
 		FlxG.collide(sheep, map.collGrounds, sheep.setLanded);
+        FlxG.collide(enemies, weapons.bullets, hurtEnemy);
+        FlxG.collide(sheep, enemieShots, hurtPlayer);
+        FlxG.collide(map.collGrounds, weapons.bullets, explode);
+        FlxG.collide(map.collGrounds, enemieShots, explode);
+        //FlxG.collide(weapons.bullets, enemieShots);
 	
 		weapons.setPos(sheep.x, sheep.y);
 		weapons.flipPos(sheep.flipX);
@@ -97,4 +104,23 @@ class PlayState extends FlxState
 		}
 		weapons.setWeaponNumber(w);
 	}	
+
+    function hurtPlayer(player: Sheep, bullet: Bullet) {
+        // TODO: explode
+        bullet.destroy();
+        player.damage();
+    }
+
+    function hurtEnemy(enemy: Enemy, bullet: Bullet) {
+        // TODO: explode
+        bullet.destroy();
+        enemy.damage();
+    }
+
+    function explode(ground: MapGen, b: Bullet) {
+        // TODO: explosion
+        var explode = new Explosion(b.x, b.y);
+        add(explode);
+        b.destroy();
+    }
 }
