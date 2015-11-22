@@ -20,9 +20,16 @@ class Enemy extends FlxSprite {
     var attack: Float = 0;
     var attackTimer: Float;
 
+    var leftBound: Float = 0;
+    var rightBound: Float = 100;
+    var moveInBounds: Bool = false;
+    var flipped: Bool = true;
+
+    var lives: Int = 1;
+
     public var enemyShots = new FlxTypedGroup();
 
-    public function new(x: Float, y: Float, enemyType: EnemyType) 
+    public function new(x: Float, y: Float, enemyType: EnemyType, ?bounds: Bool, ?left: Float, ?right: Float) 
     {
         super(x,y);
         loadGraphic("assets/images/nazi_sheep_map.png", true, 32, 32);
@@ -31,6 +38,10 @@ class Enemy extends FlxSprite {
         animation.add("nazi_air", [8, 9, 10, 11, 12, 13, 14, 15], 10, true);
 
         sheepType = enemyType;
+
+        leftBound = left;
+        rightBound = right;
+        moveInBounds = bounds;
 
         switch(sheepType) {
             case EnemyType.NAZI_SHEEP: 
@@ -41,15 +52,26 @@ class Enemy extends FlxSprite {
                 animation.play("nazi_air");
                 moveSpeed = 0.8;
                 attackTimer = 40;
+                lives = 2;
         }
-
-        flipX = true;
     }
 
     override public function update()
     {
-        x -= moveSpeed;
         super.update();
+        if (moveInBounds) {
+            if (x <= leftBound) {
+                flipped = false;
+            } else if (x >= rightBound) {
+                flipped = true;
+            }
+            if (flipped) {
+                x -= moveSpeed;
+            } else {
+                x += moveSpeed;
+            }
+        }
+        flipX = flipped;
 
         attack++;
 
@@ -63,7 +85,7 @@ class Enemy extends FlxSprite {
     {
         switch(sheepType) {
             case EnemyType.NAZI_SHEEP: 
-                enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.GATLING, true));
+                enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.GATLING, flipped));
             case EnemyType.NAZI_SHEEP_FLYING:
                 enemyShots.add(new Bullet(x, (y+5), Bullet.BulletType.ROCKET, false, true));
         }
@@ -72,5 +94,14 @@ class Enemy extends FlxSprite {
     override public function destroy()
     {
         super.destroy();
+    }
+
+    public function damage()
+    {
+        lives--;
+        if (lives <= 0) {
+            this.destroy();
+            FlxG.camera.shake(0.01, 0.1);
+        }
     }
 }

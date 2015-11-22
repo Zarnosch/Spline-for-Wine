@@ -3,6 +3,7 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.group.FlxTypedGroup;
+import flixel.FlxCamera;
 
 class Weapon extends FlxSprite {
 
@@ -114,6 +115,7 @@ class Weapon extends FlxSprite {
         timer++;
 
 	    if (timer > shotTimer && FlxG.mouse.pressed) {
+            FlxG.camera.shake(0.01, 0.05, true, FlxCamera.SHAKE_HORIZONTAL_ONLY);
             if (currentEquippedWeapon <= 4) {
                 bullets.add(new Bullet(x, y, Bullet.BulletType.PISTOL, flipX));
             } else if(currentEquippedWeapon > 4 && currentEquippedWeapon <= 8) {
