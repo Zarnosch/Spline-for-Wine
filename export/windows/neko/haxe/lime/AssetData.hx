@@ -18,6 +18,12 @@ class AssetData {
 			
 			path.set ("assets/data/data-goes-here.txt", "assets/data/data-goes-here.txt");
 			type.set ("assets/data/data-goes-here.txt", Reflect.field (AssetType, "text".toUpperCase ()));
+			path.set ("assets/images/ammo_clip.ase", "assets/images/ammo_clip.ase");
+			type.set ("assets/images/ammo_clip.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/ammo_clip.png", "assets/images/ammo_clip.png");
+			type.set ("assets/images/ammo_clip.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/explosion.ase", "assets/images/explosion.ase");
+			type.set ("assets/images/explosion.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
 			path.set ("assets/images/explosion.png", "assets/images/explosion.png");
 			type.set ("assets/images/explosion.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/gatling.png", "assets/images/gatling.png");
@@ -34,6 +40,12 @@ class AssetData {
 			type.set ("assets/images/normal.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/rocket.png", "assets/images/rocket.png");
 			type.set ("assets/images/rocket.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/score_board.ase", "assets/images/score_board.ase");
+			type.set ("assets/images/score_board.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/score_board.png", "assets/images/score_board.png");
+			type.set ("assets/images/score_board.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/score_button.png", "assets/images/score_button.png");
+			type.set ("assets/images/score_button.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/sheep.ase", "assets/images/sheep.ase");
 			type.set ("assets/images/sheep.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
 			path.set ("assets/images/sheep.png", "assets/images/sheep.png");
@@ -42,6 +54,14 @@ class AssetData {
 			type.set ("assets/images/sheep_flying.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
 			path.set ("assets/images/sheep_flying.png", "assets/images/sheep_flying.png");
 			type.set ("assets/images/sheep_flying.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/sheep_head.ase", "assets/images/sheep_head.ase");
+			type.set ("assets/images/sheep_head.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/sheep_head.png", "assets/images/sheep_head.png");
+			type.set ("assets/images/sheep_head.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("assets/images/sheep_head_dead.ase", "assets/images/sheep_head_dead.ase");
+			type.set ("assets/images/sheep_head_dead.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
+			path.set ("assets/images/sheep_head_dead.png", "assets/images/sheep_head_dead.png");
+			type.set ("assets/images/sheep_head_dead.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("assets/images/sheep_running.ase", "assets/images/sheep_running.ase");
 			type.set ("assets/images/sheep_running.ase", Reflect.field (AssetType, "binary".toUpperCase ()));
 			path.set ("assets/images/sheep_running.png", "assets/images/sheep_running.png");

@@ -34,6 +34,18 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
+		urls.push ("assets/images/ammo_clip.ase");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
+		urls.push ("assets/images/ammo_clip.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/explosion.ase");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
 		urls.push ("assets/images/explosion.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
@@ -66,6 +78,18 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
+		urls.push ("assets/images/score_board.ase");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
+		urls.push ("assets/images/score_board.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/score_button.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
 		urls.push ("assets/images/sheep.ase");
 		types.push (lime.Assets.AssetType.BINARY);
 		
@@ -79,6 +103,22 @@ class ApplicationMain {
 		
 		
 		urls.push ("assets/images/sheep_flying.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/sheep_head.ase");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
+		urls.push ("assets/images/sheep_head.png");
+		types.push (lime.Assets.AssetType.IMAGE);
+		
+		
+		urls.push ("assets/images/sheep_head_dead.ase");
+		types.push (lime.Assets.AssetType.BINARY);
+		
+		
+		urls.push ("assets/images/sheep_head_dead.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
@@ -206,7 +246,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "359",
+			build: "363",
 			company: "HaxeFlixel",
 			file: "Spline for Wine",
 			fps: 60,

@@ -25,6 +25,12 @@ ApplicationMain.create = function() {
 	var types = [];
 	urls.push("assets/data/data-goes-here.txt");
 	types.push("TEXT");
+	urls.push("assets/images/ammo_clip.ase");
+	types.push("BINARY");
+	urls.push("assets/images/ammo_clip.png");
+	types.push("IMAGE");
+	urls.push("assets/images/explosion.ase");
+	types.push("BINARY");
 	urls.push("assets/images/explosion.png");
 	types.push("IMAGE");
 	urls.push("assets/images/gatling.png");
@@ -41,6 +47,12 @@ ApplicationMain.create = function() {
 	types.push("IMAGE");
 	urls.push("assets/images/rocket.png");
 	types.push("IMAGE");
+	urls.push("assets/images/score_board.ase");
+	types.push("BINARY");
+	urls.push("assets/images/score_board.png");
+	types.push("IMAGE");
+	urls.push("assets/images/score_button.png");
+	types.push("IMAGE");
 	urls.push("assets/images/sheep.ase");
 	types.push("BINARY");
 	urls.push("assets/images/sheep.png");
@@ -48,6 +60,14 @@ ApplicationMain.create = function() {
 	urls.push("assets/images/sheep_flying.ase");
 	types.push("BINARY");
 	urls.push("assets/images/sheep_flying.png");
+	types.push("IMAGE");
+	urls.push("assets/images/sheep_head.ase");
+	types.push("BINARY");
+	urls.push("assets/images/sheep_head.png");
+	types.push("IMAGE");
+	urls.push("assets/images/sheep_head_dead.ase");
+	types.push("BINARY");
+	urls.push("assets/images/sheep_head_dead.png");
 	types.push("IMAGE");
 	urls.push("assets/images/sheep_running.ase");
 	types.push("BINARY");
@@ -103,7 +123,7 @@ ApplicationMain.init = function() {
 	if(total == 0) ApplicationMain.start();
 };
 ApplicationMain.main = function() {
-	ApplicationMain.config = { build : "359", company : "HaxeFlixel", file : "Spline for Wine", fps : 60, name : "Spline for Wine", orientation : "portrait", packageName : "com.example.myapp", version : "0.0.1", windows : [{ antialiasing : 0, background : 16748545, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, parameters : "{}", resizable : true, stencilBuffer : true, title : "Spline for Wine", vsync : true, width : 640, x : null, y : null}]};
+	ApplicationMain.config = { build : "363", company : "HaxeFlixel", file : "Spline for Wine", fps : 60, name : "Spline for Wine", orientation : "portrait", packageName : "com.example.myapp", version : "0.0.1", windows : [{ antialiasing : 0, background : 16748545, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, parameters : "{}", resizable : true, stencilBuffer : true, title : "Spline for Wine", vsync : true, width : 640, x : null, y : null}]};
 };
 ApplicationMain.start = function() {
 	var hasMain = false;
@@ -1505,7 +1525,7 @@ var Main = function() {
 	this.skipSplash = false;
 	this.framerate = 60;
 	this.zoom = 2;
-	this.initialState = PlayState;
+	this.initialState = MenuState;
 	this.gameHeight = 240;
 	this.gameWidth = 320;
 	openfl_display_Sprite.call(this);
@@ -3054,6 +3074,15 @@ var DefaultAssetLibrary = function() {
 	id = "assets/data/data-goes-here.txt";
 	this.path.set(id,id);
 	this.type.set(id,"TEXT");
+	id = "assets/images/ammo_clip.ase";
+	this.path.set(id,id);
+	this.type.set(id,"BINARY");
+	id = "assets/images/ammo_clip.png";
+	this.path.set(id,id);
+	this.type.set(id,"IMAGE");
+	id = "assets/images/explosion.ase";
+	this.path.set(id,id);
+	this.type.set(id,"BINARY");
 	id = "assets/images/explosion.png";
 	this.path.set(id,id);
 	this.type.set(id,"IMAGE");
@@ -3078,6 +3107,15 @@ var DefaultAssetLibrary = function() {
 	id = "assets/images/rocket.png";
 	this.path.set(id,id);
 	this.type.set(id,"IMAGE");
+	id = "assets/images/score_board.ase";
+	this.path.set(id,id);
+	this.type.set(id,"BINARY");
+	id = "assets/images/score_board.png";
+	this.path.set(id,id);
+	this.type.set(id,"IMAGE");
+	id = "assets/images/score_button.png";
+	this.path.set(id,id);
+	this.type.set(id,"IMAGE");
 	id = "assets/images/sheep.ase";
 	this.path.set(id,id);
 	this.type.set(id,"BINARY");
@@ -3088,6 +3126,18 @@ var DefaultAssetLibrary = function() {
 	this.path.set(id,id);
 	this.type.set(id,"BINARY");
 	id = "assets/images/sheep_flying.png";
+	this.path.set(id,id);
+	this.type.set(id,"IMAGE");
+	id = "assets/images/sheep_head.ase";
+	this.path.set(id,id);
+	this.type.set(id,"BINARY");
+	id = "assets/images/sheep_head.png";
+	this.path.set(id,id);
+	this.type.set(id,"IMAGE");
+	id = "assets/images/sheep_head_dead.ase";
+	this.path.set(id,id);
+	this.type.set(id,"BINARY");
+	id = "assets/images/sheep_head_dead.png";
 	this.path.set(id,id);
 	this.type.set(id,"IMAGE");
 	id = "assets/images/sheep_running.ase";
@@ -3570,7 +3620,7 @@ Enemy.prototype = $extend(flixel_FlxSprite.prototype,{
 var Explosion = function(x,y) {
 	flixel_FlxSprite.call(this,x - 8,y - 16);
 	this.loadGraphic("assets/images/explosion.png",true,32,32);
-	this.animation.add("explode",[0,1,2,3,4,5],8,false);
+	this.animation.add("explode",[0,1,2,3,4,5,6],8,false);
 	this.animation.play("explode");
 };
 $hxClasses["Explosion"] = Explosion;
@@ -3803,63 +3853,6 @@ MapGen.prototype = $extend(flixel_FlxBasic.prototype,{
 	,__class__: MapGen
 });
 Math.__name__ = ["Math"];
-var NMEPreloader = function() {
-	openfl_display_Sprite.call(this);
-	var backgroundColor = this.getBackgroundColor();
-	var r = backgroundColor >> 16 & 255;
-	var g = backgroundColor >> 8 & 255;
-	var b = backgroundColor & 255;
-	var perceivedLuminosity = 0.299 * r + 0.587 * g + 0.114 * b;
-	var color = 0;
-	if(perceivedLuminosity < 70) color = 16777215;
-	var x = 30;
-	var height = 7;
-	var y = this.getHeight() / 2 - height / 2;
-	var width = this.getWidth() - x * 2;
-	var padding = 2;
-	this.outline = new openfl_display_Sprite();
-	this.outline.get_graphics().beginFill(color,0.07);
-	this.outline.get_graphics().drawRect(0,0,width,height);
-	this.outline.set_x(x);
-	this.outline.set_y(y);
-	this.addChild(this.outline);
-	this.progress = new openfl_display_Sprite();
-	this.progress.get_graphics().beginFill(color,0.35);
-	this.progress.get_graphics().drawRect(0,0,width - padding * 2,height - padding * 2);
-	this.progress.set_x(x + padding);
-	this.progress.set_y(y + padding);
-	this.progress.set_scaleX(0);
-	this.addChild(this.progress);
-};
-$hxClasses["NMEPreloader"] = NMEPreloader;
-NMEPreloader.__name__ = ["NMEPreloader"];
-NMEPreloader.__super__ = openfl_display_Sprite;
-NMEPreloader.prototype = $extend(openfl_display_Sprite.prototype,{
-	outline: null
-	,progress: null
-	,getBackgroundColor: function() {
-		return 16748545;
-	}
-	,getHeight: function() {
-		var height = 480;
-		if(height > 0) return height; else return openfl_Lib.current.stage.stageHeight;
-	}
-	,getWidth: function() {
-		var width = 640;
-		if(width > 0) return width; else return openfl_Lib.current.stage.stageWidth;
-	}
-	,onInit: function() {
-	}
-	,onLoaded: function() {
-		this.dispatchEvent(new openfl_events_Event(openfl_events_Event.COMPLETE));
-	}
-	,onUpdate: function(bytesLoaded,bytesTotal) {
-		var percentLoaded = bytesLoaded / bytesTotal;
-		if(percentLoaded > 1) percentLoaded = 1;
-		this.progress.set_scaleX(percentLoaded);
-	}
-	,__class__: NMEPreloader
-});
 var flixel_group_FlxTypedGroup = function(MaxSize) {
 	if(MaxSize == null) MaxSize = 0;
 	this._marker = 0;
@@ -4251,7 +4244,97 @@ flixel_FlxState.prototype = $extend(flixel_group_FlxGroup.prototype,{
 	,__class__: flixel_FlxState
 	,__properties__: $extend(flixel_group_FlxGroup.prototype.__properties__,{set_bgColor:"set_bgColor",get_bgColor:"get_bgColor"})
 });
+var MenuState = function(MaxSize) {
+	flixel_FlxState.call(this,MaxSize);
+};
+$hxClasses["MenuState"] = MenuState;
+MenuState.__name__ = ["MenuState"];
+MenuState.__super__ = flixel_FlxState;
+MenuState.prototype = $extend(flixel_FlxState.prototype,{
+	startButton: null
+	,scoreButton: null
+	,create: function() {
+		this.startButton = new flixel_ui_FlxButton(flixel_FlxG.width / 2 - 40,80,"START",$bind(this,this.startGame));
+		this.add(this.startButton);
+		this.scoreButton = new flixel_ui_FlxButton(flixel_FlxG.width / 2 - 40,120,"SCORE",$bind(this,this.goScore));
+		this.add(this.scoreButton);
+		flixel_FlxState.prototype.create.call(this);
+	}
+	,startGame: function() {
+		flixel_FlxG.switchState(new PlayState());
+	}
+	,goScore: function() {
+		haxe_Log.trace("score",{ fileName : "MenuState.hx", lineNumber : 39, className : "MenuState", methodName : "goScore"});
+	}
+	,destroy: function() {
+		flixel_FlxState.prototype.destroy.call(this);
+	}
+	,update: function() {
+		flixel_FlxState.prototype.update.call(this);
+	}
+	,__class__: MenuState
+});
+var NMEPreloader = function() {
+	openfl_display_Sprite.call(this);
+	var backgroundColor = this.getBackgroundColor();
+	var r = backgroundColor >> 16 & 255;
+	var g = backgroundColor >> 8 & 255;
+	var b = backgroundColor & 255;
+	var perceivedLuminosity = 0.299 * r + 0.587 * g + 0.114 * b;
+	var color = 0;
+	if(perceivedLuminosity < 70) color = 16777215;
+	var x = 30;
+	var height = 7;
+	var y = this.getHeight() / 2 - height / 2;
+	var width = this.getWidth() - x * 2;
+	var padding = 2;
+	this.outline = new openfl_display_Sprite();
+	this.outline.get_graphics().beginFill(color,0.07);
+	this.outline.get_graphics().drawRect(0,0,width,height);
+	this.outline.set_x(x);
+	this.outline.set_y(y);
+	this.addChild(this.outline);
+	this.progress = new openfl_display_Sprite();
+	this.progress.get_graphics().beginFill(color,0.35);
+	this.progress.get_graphics().drawRect(0,0,width - padding * 2,height - padding * 2);
+	this.progress.set_x(x + padding);
+	this.progress.set_y(y + padding);
+	this.progress.set_scaleX(0);
+	this.addChild(this.progress);
+};
+$hxClasses["NMEPreloader"] = NMEPreloader;
+NMEPreloader.__name__ = ["NMEPreloader"];
+NMEPreloader.__super__ = openfl_display_Sprite;
+NMEPreloader.prototype = $extend(openfl_display_Sprite.prototype,{
+	outline: null
+	,progress: null
+	,getBackgroundColor: function() {
+		return 16748545;
+	}
+	,getHeight: function() {
+		var height = 480;
+		if(height > 0) return height; else return openfl_Lib.current.stage.stageHeight;
+	}
+	,getWidth: function() {
+		var width = 640;
+		if(width > 0) return width; else return openfl_Lib.current.stage.stageWidth;
+	}
+	,onInit: function() {
+	}
+	,onLoaded: function() {
+		this.dispatchEvent(new openfl_events_Event(openfl_events_Event.COMPLETE));
+	}
+	,onUpdate: function(bytesLoaded,bytesTotal) {
+		var percentLoaded = bytesLoaded / bytesTotal;
+		if(percentLoaded > 1) percentLoaded = 1;
+		this.progress.set_scaleX(percentLoaded);
+	}
+	,__class__: NMEPreloader
+});
 var PlayState = function(MaxSize) {
+	this.kills = 0;
+	this.score = 0;
+	this.ammoClipMaxY = 144;
 	this.w = 1;
 	this.enemieShots = new flixel_group_FlxTypedGroup();
 	this.enemies = new flixel_group_FlxTypedGroup();
@@ -4267,6 +4350,18 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 	,enemieShots: null
 	,w: null
 	,map: null
+	,live1: null
+	,live2: null
+	,live3: null
+	,dead1: null
+	,dead2: null
+	,dead3: null
+	,scoreBoard: null
+	,ammoClip: null
+	,ammoClipMaxY: null
+	,score: null
+	,scoreText: null
+	,kills: null
 	,create: function() {
 		flixel_FlxG.camera.bgColor = -258112;
 		flixel_FlxState.prototype.create.call(this);
@@ -4290,6 +4385,37 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		this.add(this.enemies);
 		this.add(this.enemieShots);
 		this.map.sheep = this.sheep;
+		this.live1 = new flixel_FlxSprite(2,2,"assets/images/sheep_head.png");
+		this.live1.scrollFactor.set(0,0);
+		this.add(this.live1);
+		this.live2 = new flixel_FlxSprite(34,2,"assets/images/sheep_head.png");
+		this.live2.scrollFactor.set(0,0);
+		this.add(this.live2);
+		this.live3 = new flixel_FlxSprite(66,2,"assets/images/sheep_head.png");
+		this.live3.scrollFactor.set(0,0);
+		this.add(this.live3);
+		this.dead1 = new flixel_FlxSprite(2,2,"assets/images/sheep_head_dead.png");
+		this.dead2 = new flixel_FlxSprite(32,2,"assets/images/sheep_head_dead.png");
+		this.dead3 = new flixel_FlxSprite(66,2,"assets/images/sheep_head_dead.png");
+		this.dead1.scrollFactor.set(0,0);
+		this.dead2.scrollFactor.set(0,0);
+		this.dead3.scrollFactor.set(0,0);
+		this.dead1.set_visible(false);
+		this.dead2.set_visible(false);
+		this.dead3.set_visible(false);
+		this.add(this.dead1);
+		this.add(this.dead2);
+		this.add(this.dead3);
+		this.scoreBoard = new flixel_FlxSprite(146,0,"assets/images/score_board.png");
+		this.scoreBoard.scrollFactor.set(0,0);
+		this.add(this.scoreBoard);
+		this.scoreText = new flixel_text_FlxText(160,5,200,"",10,true);
+		this.scoreText.scrollFactor.set(0,0);
+		this.scoreText.set_text("" + this.score);
+		this.add(this.scoreText);
+		this.ammoClip = new flixel_FlxSprite(253,this.ammoClipMaxY,"assets/images/ammo_clip.png");
+		this.ammoClip.scrollFactor.set(0,0);
+		this.add(this.ammoClip);
 	}
 	,destroy: function() {
 		flixel_FlxState.prototype.destroy.call(this);
@@ -4307,25 +4433,42 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		flixel_FlxG.overlap(this.map.collGrounds,this.enemieShots,$bind(this,this.explode));
 		this.weapons.setPos(this.sheep.x,this.sheep.y);
 		this.weapons.flipPos(this.sheep.flipX);
-		if(flixel_FlxG.keys.checkStatus(39,flixel_FlxG.keys.justPressed.checkStatus)) this.w++;
-		if(flixel_FlxG.keys.checkStatus(37,flixel_FlxG.keys.justPressed.checkStatus)) this.w--;
+		if(this.score > (this.w + 2) * 100) this.w++;
 		this.weapons.setWeaponNumber(this.w);
-		var $it0 = new flixel_group_FlxTypedGroupIterator(this.map.visGrounds.members,null);
-		while( $it0.hasNext() ) {
-			var val = $it0.next();
-			if(this.sheep.x - val.x > 600) val.destroy();
-		}
+		this.ammoClip.set_y(this.ammoClipMaxY + 96 * (this.weapons.shotsFired / this.weapons.ammo));
+		this.score = this.kills * 100;
+		this.scoreText.set_text("" + this.score);
 	}
 	,hurtPlayer: function(player,bullet) {
 		if(flixel_util_FlxCollision.pixelPerfectCheck(player,bullet,255,null)) {
+			if(player.damage()) {
+				flixel_FlxG.camera.flash(-65536,0.1);
+				var _g = player.lives;
+				switch(_g) {
+				case 2:
+					this.dead3.set_visible(true);
+					break;
+				case 1:
+					this.dead3.set_visible(true);
+					this.dead2.set_visible(true);
+					break;
+				case 0:
+					this.dead3.set_visible(true);
+					this.dead2.set_visible(true);
+					this.dead1.set_visible(true);
+					break;
+				}
+			}
 			bullet.destroy();
-			player.damage();
 		}
 	}
 	,hurtEnemy: function(enemy,bullet) {
-		if(flixel_util_FlxCollision.pixelPerfectCheck(enemy,bullet,255,null)) {
-			bullet.destroy();
-			enemy.damage();
+		if(enemy != null && bullet != null) {
+			if(flixel_util_FlxCollision.pixelPerfectCheck(enemy,bullet,255,null)) {
+				bullet.destroy();
+				enemy.damage();
+				this.kills++;
+			}
 		}
 	}
 	,explode: function(ground,b) {
@@ -4559,7 +4702,8 @@ Sheep.prototype = $extend(flixel_FlxSprite.prototype,{
 	,damage: function() {
 		this.lives--;
 		flixel_FlxG.camera.shake(0.05,0.2);
-		if(this.lives <= 0) this.destroy();
+		if(this.lives < 0) this.destroy();
+		return true;
 	}
 	,__class__: Sheep
 });
@@ -4817,6 +4961,8 @@ _$UInt_UInt_$Impl_$.toFloat = function(this1) {
 };
 var Weapon = function() {
 	this.bullets = new flixel_group_FlxTypedGroup();
+	this.shotsFired = 0;
+	this.ammo = 10;
 	this.currentEquippedWeapon = 1;
 	this.timer = 0;
 	this.shotTimer = 10.0;
@@ -4851,6 +4997,8 @@ Weapon.prototype = $extend(flixel_FlxSprite.prototype,{
 	,shotTimer: null
 	,timer: null
 	,currentEquippedWeapon: null
+	,ammo: null
+	,shotsFired: null
 	,bullets: null
 	,setPos: function(xPos,yPos) {
 		this.xPos = xPos + 23;
@@ -4860,51 +5008,67 @@ Weapon.prototype = $extend(flixel_FlxSprite.prototype,{
 		switch(weaponNumber) {
 		case 1:
 			this.animation.play("pistol_lame");
+			this.ammo = 10;
 			break;
 		case 2:
 			this.animation.play("pistol_better");
+			this.ammo = 20;
 			break;
 		case 3:
 			this.animation.play("pistol_cool");
+			this.ammo = 30;
 			break;
 		case 4:
 			this.animation.play("pistol_awesome");
+			this.ammo = 40;
 			break;
 		case 5:
 			this.animation.play("gatling_lame");
+			this.ammo = 100;
 			break;
 		case 6:
 			this.animation.play("gatling_better");
+			this.ammo = 200;
 			break;
 		case 7:
 			this.animation.play("gatling_cool");
+			this.ammo = 300;
 			break;
 		case 8:
 			this.animation.play("gatling_awesome");
+			this.ammo = 400;
 			break;
 		case 9:
 			this.animation.play("tesla_lame");
+			this.ammo = 500;
 			break;
 		case 10:
 			this.animation.play("tesla_better");
+			this.ammo = 1000;
 			break;
 		case 11:
 			this.animation.play("tesla_cool");
+			this.ammo = 1500;
 			break;
 		case 12:
 			this.animation.play("tesla_awesome");
+			this.ammo = 2000;
 			break;
 		case 13:
 			this.animation.play("rocket_lame");
+			this.ammo = 5;
 			break;
 		case 14:
 			this.animation.play("rocket_better");
+			this.ammo = 10;
 			break;
 		case 15:
 			this.animation.play("rocket_cool");
+			this.ammo = 15;
 			break;
 		case 16:
 			this.animation.play("rocket_awesome");
+			this.ammo = 20;
 			break;
 		}
 		this.currentEquippedWeapon = weaponNumber;
@@ -4921,7 +5085,13 @@ Weapon.prototype = $extend(flixel_FlxSprite.prototype,{
 		this.timer++;
 		if(this.timer > this.shotTimer && flixel_FlxG.mouse._leftButton.current > 0) {
 			flixel_FlxG.camera.shake(0.01,0.05,null,true,1);
-			if(this.currentEquippedWeapon <= 4) this.bullets.add(new Bullet(this.x,this.y,BulletType.PISTOL,this.flipX)); else if(this.currentEquippedWeapon > 4 && this.currentEquippedWeapon <= 8) this.bullets.add(new Bullet(this.x,this.y,BulletType.GATLING,this.flipX)); else if(this.currentEquippedWeapon > 8 && this.currentEquippedWeapon <= 12) this.bullets.add(new Bullet(this.x,this.y,BulletType.TESLA,this.flipX)); else if(this.currentEquippedWeapon > 12) this.bullets.add(new Bullet(this.x,this.y,BulletType.ROCKET,this.flipX));
+			this.shotsFired++;
+			if(this.shotsFired < this.ammo) {
+				if(this.currentEquippedWeapon <= 4) this.bullets.add(new Bullet(this.x,this.y,BulletType.PISTOL,this.flipX)); else if(this.currentEquippedWeapon > 4 && this.currentEquippedWeapon <= 8) this.bullets.add(new Bullet(this.x,this.y,BulletType.GATLING,this.flipX)); else if(this.currentEquippedWeapon > 8 && this.currentEquippedWeapon <= 12) this.bullets.add(new Bullet(this.x,this.y,BulletType.TESLA,this.flipX)); else if(this.currentEquippedWeapon > 12) this.bullets.add(new Bullet(this.x,this.y,BulletType.ROCKET,this.flipX));
+			} else {
+				flixel_FlxG.camera.flash(-1,0.05);
+				this.shotsFired = 0;
+			}
 			this.timer = 0;
 		}
 	}

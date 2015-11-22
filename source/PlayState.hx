@@ -161,11 +161,13 @@ class PlayState extends FlxState
         }
 
 		weapons.setWeaponNumber(w);
+		/*
 		for (val in map.visGrounds) {
 			if (sheep.x - val.x > 600) {
 				val.destroy();
 			}
-		}		
+		}
+		*/
 
         ammoClip.y = ammoClipMaxY + 96 * (weapons.shotsFired/weapons.ammo);
         score = kills * 100;
@@ -197,10 +199,12 @@ class PlayState extends FlxState
 
     function hurtEnemy(enemy: Enemy, bullet: Bullet) {
         // TODO: explode
-		if (FlxG.pixelPerfectOverlap(enemy, bullet, 255)) {
-			bullet.destroy();
-			enemy.damage();
-            kills++;
+		if (enemy != null && bullet != null) {
+			if (FlxG.pixelPerfectOverlap(enemy, bullet, 255)) {
+				bullet.destroy();
+				enemy.damage();
+				kills++;
+			}
 		}        
     }
 
